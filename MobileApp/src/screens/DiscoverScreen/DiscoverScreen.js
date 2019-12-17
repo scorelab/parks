@@ -6,6 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator'
 import { NavigationEvents } from 'react-navigation'
 import database from '@react-native-firebase/database';
+import { generateResult } from '../../components/UserDataHandling/UserDataHandling';
 
 var MapStyle = require('../../config/map.json')
 
@@ -15,7 +16,7 @@ class DiscoverScreen extends React.Component {
         return {
             headerTitle: 'Explore Near By',
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#0b6623',
             },
             headerTintColor: 'white',
         }
@@ -34,11 +35,7 @@ class DiscoverScreen extends React.Component {
 
     componentDidMount() {
         this.findCoordinates()
-        // database().ref('/users/').on("value", snapshot=>{
-        //     this.getObservations()
-        // })
         this.getObservations()
-
     }
 
     getObservations = async function () {
@@ -63,7 +60,7 @@ class DiscoverScreen extends React.Component {
             time = time.toString().split(" ")
             time = time.splice(0, time.length - 1)
             time = time.toString().replace(/,/g, ' ')
-            let result = [[]]
+            let result = generateResult(val[i])
             let address = val[i].address
             let marker =
                 {
@@ -94,6 +91,9 @@ class DiscoverScreen extends React.Component {
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                await this.setState({
+                    locationPermission: true
+                })
                 await Geolocation.getCurrentPosition(
                     position => {
                         const initialPosition = position;
@@ -157,7 +157,7 @@ class DiscoverScreen extends React.Component {
                                         showPhoto: this.props.navigation
                                     }
                                 )}
-                            // image={require('../../Assets/landing2WS.png')}
+                            // image={require('../../images/landing2W.png')}
                             />
                         ))}
                     </MapView>

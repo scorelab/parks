@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet,ScrollView, Image, Dimensions, ImageBackground } from 'react-native'
 import { facebookLogin } from '../../components/FaceBookLogin/FaceBookLogin'
 import { googleLogin } from '../../components/GoogleLogin/GoogleLogin'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {COVER, LOGOB} from '../../images/index'
+import {COVER, LOGO} from '../../images/index'
 
 class LoginScreen extends React.Component {
 
@@ -13,12 +13,16 @@ class LoginScreen extends React.Component {
             headerStyle: {
                 backgroundColor: '#4b8b3b',
             },
-            headerTintColor: 'white',
+            headerTintColor: '#fff',
         }
     }
 
     constructor(props) {
         super(props)
+    }
+
+    componentDidMount(){
+      
     }
 
     facebookLoginBtnHandler = (navigate) => {
@@ -29,6 +33,10 @@ class LoginScreen extends React.Component {
         googleLogin(navigate)
     }
 
+    emailLoginBtnHandler = ()=>{
+        this.props.navigation.navigate('Email')
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -37,9 +45,10 @@ class LoginScreen extends React.Component {
                     source={COVER}
                     style={styles.imgConatiner}
                 >
+                    <ScrollView contentContainerStyle={{flexGrow: 1}} style={{marginTop: 80,marginBottom: 80,flex:1,height: Dimensions.get('window').height}}>
                     <View style={styles.logoBtnCntner}>
                         <View style={styles.logoIconContainer}>
-                            <Image source={LOGOB} style={styles.logo} />
+                            <Image source={LOGO} style={styles.logo} />
                             <Text style={styles.logoText}>Sri Lankan National Parks</Text>
                         </View>
                         <View style={styles.btnContainer}>
@@ -49,7 +58,7 @@ class LoginScreen extends React.Component {
                                 backgroundColor="#3b5998"
                                 onPress={() => this.facebookLoginBtnHandler(navigate)}
                             >
-                                Login with Facebook
+                                SignUp with Facebook
                             </Icon.Button>
                         </View>
                         <View style={styles.btnContainer}>
@@ -59,12 +68,22 @@ class LoginScreen extends React.Component {
                                 backgroundColor="#DD4B39"
                                 onPress={() => this.GoogleLoginBtnHandler(navigate)}
                             >
-                                Login with Google
+                                SignUp with Google
+                            </Icon.Button>
+                        </View>
+                        <View style={styles.btnContainer}>
+                            <Icon.Button
+                                style={styles.btn}
+                                name="envelope"
+                                backgroundColor="grey"
+                                onPress={() => this.emailLoginBtnHandler()}
+                            >
+                                SignUp with Email
                             </Icon.Button>
                         </View>
 
                     </View>
-
+                    </ScrollView>
                 </ImageBackground>
 
             </View>
@@ -79,10 +98,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         alignSelf: 'stretch',
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
     },
     btnContainer: {
-        marginBottom: 8,
+        padding: 3,
+        marginBottom: 3,
+        borderRadius: 10
     },
     btn: {
         width: Dimensions.get('window').width - 80,
@@ -94,16 +116,16 @@ const styles = StyleSheet.create({
         marginBottom: 25
     },
     logo: {
-        width: 100,
-        height: 100,
-        resizeMode: 'stretch',
+        width: 80,
+        height: 80,
+        resizeMode: 'stretch'
     },
     logoText: {
         color: 'white',
-        fontSize: 40,
-        marginBottom: 5,
-        textAlign: 'center',
-        fontFamily: 'ProximaNova-Regular'
+        fontSize: 50,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        textAlign: 'center'
     },
     bottom: {
         flex: 1,
@@ -117,15 +139,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: Dimensions.get('window').height,
-
-        resizeMode: 'stretch',
     },
     logoBtnCntner: {
-        height: 400,
+        flex: 1,
         borderRadius: 50,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        padding: 20,
-        width: Dimensions.get('window').width - 40
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        width: Dimensions.get('window').width - 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20
     }
 })
 export default LoginScreen;

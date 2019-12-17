@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native'
 import { RadioButton,Switch, Text, Avatar, Divider, TextInput } from 'react-native-paper';
 
-class RadioButtonGroupVertical extends React.Component {
+export class RadioButtonGroupVertical extends React.Component {
 
     constructor(props) {
         super(props);
@@ -50,7 +50,7 @@ class RadioButtonGroupVertical extends React.Component {
     }
 }
 
-class RadioButtonGroupHorizontal extends React.Component {
+export class RadioButtonGroupHorizontal extends React.Component {
 
     constructor(props) {
         super(props);
@@ -96,7 +96,7 @@ class RadioButtonGroupHorizontal extends React.Component {
     }
 }
 
-class ToggleButtonGroupHorizontal extends React.Component {
+export class ToggleButtonGroupHorizontal extends React.Component {
 
     constructor(props) {
         super(props);
@@ -135,7 +135,7 @@ class ToggleButtonGroupHorizontal extends React.Component {
     }
 }
 
-class TextInputGroupHorizontal extends React.Component {
+export class TextInputGroupHorizontal extends React.Component {
 
     constructor(props) {
         super(props);
@@ -178,7 +178,7 @@ class TextInputGroupHorizontal extends React.Component {
     }
 }
 
-class UneditableComponent extends React.Component {
+export class UneditableComponent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -197,6 +197,35 @@ class UneditableComponent extends React.Component {
 
         );
     }
+}
+
+export class TextInputWithIcon extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        return (
+            <View style={styles.btnContainer}>
+                <TextInput
+                    value={this.state.username}
+                    onChangeText={text => this.setState({ username: text })}
+                    placeholder={'Eg. Nimal Perera'}
+                    mode='flat'
+                    style={{borderRadius: 0}}
+                    inlineImageLeft={'account'}
+                    inlineImagePadding={20}
+                />
+                <HelperText
+                    type="error"
+                    visible={!this.state.username.match(this.state.usernamePattern)}
+                >
+                    Username is invalid!
+                </HelperText>
+            </View>
+        )
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -233,6 +262,3 @@ const styles = StyleSheet.create({
         height: 55
     }
 })
-
-export { RadioButtonGroupVertical, RadioButtonGroupHorizontal, TextInputGroupHorizontal, UneditableComponent, ToggleButtonGroupHorizontal };
-

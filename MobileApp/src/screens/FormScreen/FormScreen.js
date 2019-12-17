@@ -31,7 +31,7 @@ class FormScreen extends React.Component {
         let date = new Date().toString().split(" ")
         date = date.splice(0, date.length - 2)
         this.state = {
-            photos: [{ "node": { "group_name": "Pictures", "image": [], "timestamp": 1574182457, "type": "image/jpeg" } }],
+            photos: this.props.navigation.getParam('dataUri'),
             location: ['', ''],
             activityIndicator: false,
             address: [],
@@ -48,7 +48,6 @@ class FormScreen extends React.Component {
 
     componentDidMount() {
         this.findCoordinates()
-        this.loadImageCaptured()
         this.props.navigation.setParams({
             handlePress: () => this.uploadData(),
         });
@@ -71,7 +70,7 @@ class FormScreen extends React.Component {
         console.log(randomID)
         const storageRef = storage().ref('/observations/' + randomID + '.jpeg')
 
-        await storageRef.putFile(this.state.photos[0].node.image.uri)
+        await storageRef.putFile(this.props.navigation.getParam('dataUri'))
 
         const url = await storageRef.getDownloadURL()
         console.log(url)
@@ -152,27 +151,14 @@ class FormScreen extends React.Component {
         console.log(childData[1] + ": " + childData[0])
     }
 
-    loadImageCaptured() {
-        CameraRoll.getPhotos({
-            first: 1,
-            assetType: 'Photos',
-        })
-            .then(r => {
-                this.setState({ photos: r.edges });
-            })
-            .catch((err) => {
-                //Error Loading Images
-            });
-    }
-
     render() {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <ImageBackground blurRadius={10} style={{ width: "100%" }} source={{ uri: this.state.photos[0].node.image.uri }}>
+                <ImageBackground blurRadius={10} style={{ width: "100%" }} source={{ uri: this.props.navigation.getParam('dataUri') }}>
                     <TouchableOpacity
                         style={styles.imgHolder}
-                        onPress={() => navigate('showPhoto', { img: this.state.photos[0].node.image.uri })}
+                        onPress={() => navigate('showPhoto', { img: this.props.navigation.getParam('dataUri') })}
                     >
                         <Image
                             style={{
@@ -180,7 +166,7 @@ class FormScreen extends React.Component {
                                 height: 250,
                                 borderRadius: 40
                             }}
-                            source={{ uri: this.state.photos[0].node.image.uri }}
+                            source={{ uri: this.props.navigation.getParam('dataUri') }}
                         />
                     </TouchableOpacity>
                 </ImageBackground>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, Text, Image, Dimensions } from 'react-native'
+import { View, StyleSheet, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { Searchbar, Chip } from 'react-native-paper';
 import { generateResult } from '../../components/UserDataHandling/UserDataHandling'
 import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator'
@@ -10,7 +10,8 @@ class SearchScreen extends React.Component {
         super(props)
         this.state = {
             firstQuery: '',
-            observations: []
+            observations: [],
+            type: 'all'
         }
     }
 
@@ -19,7 +20,7 @@ class SearchScreen extends React.Component {
         return {
 
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#0b6623',
             },
             headerTintColor: 'white',
             headerRight: () => <Searchbar
@@ -40,7 +41,7 @@ class SearchScreen extends React.Component {
         // database().ref('/users/').on("value", snapshot=>{
         //     this.getObservations('all')
         // })
-        this.getObservations('all')
+        this.getObservations(this.state.type)
     }
 
     onTextChangeHandler = (text) => {
@@ -53,16 +54,72 @@ class SearchScreen extends React.Component {
         });
     }
 
-    getObservations = async function (type) {
+    getObservations = async(type) =>{
         // Fetch the data snapshot
-        const data = await database().ref(`/usersObservations/`).once('value')
-        console.log(data)
+        const data = await database().ref(`/usersObservations/`).orderByValue(type).limitToLast(10).once('value')
+        
         const val = data.val()
 
-        let observations = []
-        console.log(val[0])
+        let userObservations = []
+        let lastVisible = ''
         for (let i in val) {
-            console.log(val[i].address)
+            let time = new Date(val[i].time)
+            let crntTime = new Date().getTime()
+            let dif = crntTime - time
+            if(dif <= 604800000){continue}
+            let name = val[i].uname
+            let photo = val[i].uimg
+            let userNick = name.toLowerCase().replace(/ /g, '')
+            
+            let photUrl = val[i].photoURL
+            let location = val[i].location
+            time = time.toString().split(" ")
+            time = time.splice(0, time.length - 1)
+            time = time.toString().replace(/,/g, ' ')
+            let result = generateResult(val[i])
+            let address = val[i].address
+            type.split(" ").map((keywd) => {
+                let found = result.map((val) => {
+                    return val[1].toLowerCase().includes(keywd)
+                })
+                if (found.includes(true)) {
+
+                    userObservations.push([name, photo, photUrl, location, time, userNick, result, address])
+                    lastVisible = i
+                } else if (type === 'all') {
+                    userObservations.push([name, photo, photUrl, location, time, userNick, result, address])
+                    lastVisible = i
+                }
+            })
+            this.setState({
+                userObservations: userObservations,
+                activityIndicator: false
+            })
+            
+        }
+        if(userObservations.length>2){
+            userObservations.pop()
+        }
+       
+        await this.setState({
+            activityIndicator: false,
+            lastVisible: lastVisible,
+            noObs: userObservations.length
+        })
+        console.log("Get "+lastVisible)
+    }
+
+    getMoreObservations= async (type) => {
+        console.log("hello")
+        let lastVisible = this.state.lastVisible
+        
+        const data = await database().ref(`/usersObservations/`).orderByValue(type).endAt(lastVisible).limitToLast(10).once('value')
+        
+        const val = data.val()
+        // console.log(val)
+        let userObservations = []
+        for (let i in val) {
+            console.log(i)
             let name = val[i].uname
             let photo = val[i].uimg
             let userNick = name.toLowerCase().replace(/ /g, '')
@@ -75,18 +132,34 @@ class SearchScreen extends React.Component {
             time = time.toString().split(" ")
             time = time.splice(0, time.length - 1)
             time = time.toString().replace(/,/g, ' ')
-            let result = [[]]
+            let result = generateResult(val[i])
             let address = val[i].address
-            console.log(observations)
-            observations.push([name, photo, photUrl, location, time, userNick, result, address])
-            await this.setState({
-                observations: observations,
-                activityIndicator: false
+            
+            type.split(" ").map((keywd) => {
+                let found = result.map((val) => {
+                    return val[1].toLowerCase().includes(keywd)
+                })
+                if (found.includes(true)) {
+
+                    userObservations.push([name, photo, photUrl, location, time, userNick, result, address])
+                    lastVisible = i
+                } else if (type === 'all') {
+                    userObservations.push([name, photo, photUrl, location, time, userNick, result, address])
+                    lastVisible = i
+                }
             })
+            
+        }
+        if(userObservations.length>2){
+            userObservations.pop()
         }
         await this.setState({
-            activityIndicator: false
+            userObservations: [...this.state.userObservations,...userObservations],
+            activityIndicator: false,
+            lastVisible: lastVisible,
+            noObs: this.state.userObservations.length
         })
+        console.log("Get more"+lastVisible)
     }
 
     _onRefresh() {
@@ -114,42 +187,44 @@ class SearchScreen extends React.Component {
                             <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('single')}>Single</Chip>
 
                         </View>
-                        <ScrollView
+                        <FlatList
+                            // Data
                             style={styles.scrollView}
-                            refreshControl={<RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                                colors={['#4b8b3b']}
-                                title={'Fetching...'}
-                            />}
-                        >
-                            <View style={styles.imgConatiner}>
-                                {this.state.observations.length > 0 ?
-                                    this.state.observations.map((val, i) => {
-                                        return (
-                                            <TouchableOpacity
-                                                key={i}
-                                                onPress={() => this.props.navigation.navigate('showDetailedPhoto',
-                                                    {
-                                                        img: val[2],
-                                                        title: val[0],
-                                                        subtitle: val[5],
-                                                        user: val[1],
-                                                        content: val[6],
-                                                        showPhoto: this.props.navigation
-                                                    }
-                                                )}
-                                            >
-                                                <Image style={styles.img} source={{ uri: val[2] }} />
-                                            </TouchableOpacity>
-                                        )
+                            data={this.state.userObservations}
+                            // Render Items
+                            horizontal={false}
+                            numColumns={3}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    onPress={() => this.props.navigation.navigate('showDetailedPhoto',
+                                        {
+                                            img: item[2],
+                                            title: item[0],
+                                            subtitle: item[5],
+                                            user: item[1],
+                                            content: item[6],
+                                            showPhoto: this.props.navigation
+                                        }
+                                    )}
+                                    style={{justifyContent: 'center'}}
+                                >
+                                    <Image style={styles.img} source={{ uri: item[2] }} />
+                                </TouchableOpacity>
+                            )}
+                            // Item Key
+                            keyExtractor={(item, index) => String(index)}
+                            // Header (Title)
+                            // On End Reached (Takes a function)
 
-                                    })
-                                    :
-                                    <Text style={{ fontSize: 20, color: 'grey' }}>Sorry! We couldn't find anything</Text>
-                                }
-                            </View>
-                        </ScrollView>
+                            // ListHeaderComponent={<Text>Hello</Text>}
+                            // Footer (Activity Indicator)
+                            ListFooterComponent={()=><ActivityIndicator title={"Loading"} showIndicator={this.state.activityIndicator} />}
+                            onEndReached={this.getMoreObservations}
+                            // How Close To The End Of List Until Next Data Request Is Made
+                            onEndReachedThreshold={0.1}
+                            // Refreshing (Set To True When End Reached)
+                            refreshing={this.state.activityIndicator}
+                        />
                     </View>
                 }
 
@@ -178,21 +253,23 @@ const styles = StyleSheet.create({
         margin: 2
     },
     img: {
-        width: Dimensions.get('window').width / 3.2,
+        width: Dimensions.get('window').width / 3.085,
         height: Dimensions.get('window').width / 3.5,
-        borderWidth: 2,
-        margin: 2
+        margin: 2,
+        justifyContent: 'center',
+        borderRadius: 2
     },
     imgConatiner: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 20,
         width: Dimensions.get('window').width
     },
     scrollView: {
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
+        marginTop: 5
     },
     welcome: {
         fontSize: 25

@@ -1,29 +1,36 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView,FlatList,Text, RefreshControl,SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, StyleSheet,FlatList,Text,SafeAreaView, TouchableOpacity } from 'react-native'
 import { Avatar} from 'react-native-paper';
 import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator'
 import { CardComponent } from '../../components/CardComponent/CardComponent'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import { generateResult } from '../../components/UserDataHandling/UserDataHandling';
 
 class FeedScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = [] } = navigation.state
+        console.log(params.userPhoto)
         return {
             headerTitle: 'Home',
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#0b6623',
             },
             headerTintColor: '#fff',
 
-            headerLeft: () => <TouchableOpacity
+            headerRight: () => <TouchableOpacity
                 onPress={() => navigation.navigate("Profile")}
             >
-                <Avatar.Image
-                    style={{ marginLeft: 5, marginRight: 0, padding: 0 }}
-                    size={35} source={{ uri: params.userPhoto }}
-                />
+                {params.userPhoto!==null?
+                    <Avatar.Image
+                        style={{ marginRight: 5, padding: 0 }}
+                        size={35} source={{ uri: params.userPhoto }}
+                    />
+                :
+                    <Avatar.Text color={'green'} size={35} style={{ marginRight: 5, padding: 0 }} label={params.userName.substr(0,2).toUpperCase()} />
+                }
+                
             </TouchableOpacity>,
         }
     }
@@ -37,13 +44,6 @@ class FeedScreen extends React.Component {
         }
     }
 
-    _onRefresh() {
-        this.setState({ refreshing: true });
-        this.getObservations().then(() => {
-            this.setState({ refreshing: false });
-        });
-    }
-
     componentDidMount() {
         this.getUserData()
         // database().ref('/users/').on("value", snapshot=>{
@@ -54,17 +54,18 @@ class FeedScreen extends React.Component {
 
     getUserData = async function () {
         // Fetch the data snapshot
-        const uid = auth().currentUser.uid;
-        const refUser = database().ref(`/users/${uid}`);
-        const snapshot = await refUser.once('value');
-        await this.props.navigation.setParams({
-            userPhoto: snapshot.val().photo
+        const user = auth().currentUser;
+        console.log(user)
+        this.props.navigation.setParams({
+            userPhoto: user.photoURL,
+            userName: user.displayName
         })
+        // console.log(snapshot.val().photo)
     }
 
     getObservations = async() =>{
         // Fetch the data snapshot
-        const data = await database().ref(`/usersObservations/`).orderByKey().limitToLast(3).once('value')
+        const data = await database().ref(`/usersObservations/`).orderByKey().limitToLast(10).once('value')
         
         const val = data.val()
 
@@ -77,13 +78,13 @@ class FeedScreen extends React.Component {
             let time = new Date(val[i].time)
             let crntTime = new Date().getTime()
             let dif = crntTime - time
-            // if (dif <= 604800000) { continue }
+            if (dif <= 604800000) { continue }
             let photUrl = val[i].photoURL
             let location = val[i].location
             time = time.toString().split(" ")
             time = time.splice(0, time.length - 1)
             time = time.toString().replace(/,/g, ' ')
-            let result = [[]]
+            let result = generateResult(val[i])
             let address = val[i].address
             
             observations.push([name, photo, photUrl, location, time, userNick, result, address])
@@ -94,40 +95,43 @@ class FeedScreen extends React.Component {
             
             lastVisible = i
         }
-        observations.pop()
+        if(observations.length>2){
+            observations.pop()
+        }
+       
         await this.setState({
             activityIndicator: false,
             lastVisible: lastVisible
         })
-        console.log("Get "+lastVisible)
+        // console.log("Get "+lastVisible)
     }
 
     getMoreObservation= async () => {
-        console.log("hello")
+        // console.log("hello")
         let lastVisible = this.state.lastVisible
         
-        const data = await database().ref(`/usersObservations/`).orderByKey().endAt(lastVisible).limitToLast(3).once('value')
+        const data = await database().ref(`/usersObservations/`).orderByKey().endAt(lastVisible).limitToLast(10).once('value')
         
         const val = data.val()
         // console.log(val)
         let observations = []
         for (let i in val) {
-            console.log(i)
+            // console.log(i)
             let name = val[i].uname
             let photo = val[i].uimg
             let userNick = name.toLowerCase().replace(/ /g, '')
             let time = new Date(val[i].time)
             let crntTime = new Date().getTime()
             let dif = crntTime - time
-            // if (dif <= 604800000) { continue }
+            if (dif <= 604800000) { continue }
             let photUrl = val[i].photoURL
             let location = val[i].location
             time = time.toString().split(" ")
             time = time.splice(0, time.length - 1)
             time = time.toString().replace(/,/g, ' ')
-            let result = [[]]
+            let result = generateResult(val[i])
             let address = val[i].address
-            
+            // console.log(result)
             observations.push([name, photo, photUrl, location, time, userNick, result, address])
             lastVisible = i
         }
@@ -137,7 +141,7 @@ class FeedScreen extends React.Component {
             activityIndicator: false,
             lastVisible: lastVisible
         })
-        console.log("Get more"+lastVisible)
+        // console.log("Get more"+lastVisible)
     }
     renderHeader = () => {
         try {
@@ -149,22 +153,22 @@ class FeedScreen extends React.Component {
           console.log(error);
         }
       };  // Render Footer
-      renderFooter = () => {
-        try {
-          // Check If Loading
-          if (this.state.activityIndicator) {
-            return (
-                <ActivityIndicator title={"Loading"} showIndicator={this.state.activityIndicator} />
-            )
-          }
-          else {
-            return null;
-          }
+    renderFooter = () => {
+    try {
+        // Check If Loading
+        if (this.state.activityIndicator) {
+        return (
+            <ActivityIndicator title={"Loading"} showIndicator={this.state.activityIndicator} />
+        )
         }
-        catch (error) {
-          console.log(error);
+        else {
+        return null;
         }
-      };
+    }
+    catch (error) {
+        console.log(error);
+    }
+    };
 
     render() {
         return (

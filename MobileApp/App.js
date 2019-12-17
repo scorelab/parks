@@ -28,12 +28,14 @@ import showLocationScreen from './src/screens/ShowLocationScreen/ShowLocationScr
 import AboutScreen from './src/screens/AboutScreen/AboutScreen'
 import ParkScreen from './src/screens/ParkScreen/ParkScreen'
 import ParkDetails from './src/screens/ParkDetails/ParkDetails'
+import EmailAuthScreen from './src/screens/EmailAuthScreen/EmailAuthScreen'
 
 import {Avatar} from 'react-native-paper'
 
 //SignIn stack
 const AuthStack = createStackNavigator({
   SignIn: LoginScreen,
+  Email: EmailAuthScreen
   
 },
 {
@@ -56,6 +58,7 @@ const FeedStack = createStackNavigator({
   showDetailedPhoto: ShowDetailedPhotoScreen ,
   showLocationScreen: showLocationScreen,
   Profile: ProfileScreen,
+  AboutScreen: AboutScreen
 });
 
 const CameraStack = createStackNavigator({
