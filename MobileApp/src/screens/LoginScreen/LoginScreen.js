@@ -4,7 +4,8 @@ import { facebookLogin } from '../../components/FaceBookLogin/FaceBookLogin'
 import { googleLogin } from '../../components/GoogleLogin/GoogleLogin'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {COVER, LOGO} from '../../images/index'
-
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 class LoginScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -22,7 +23,27 @@ class LoginScreen extends React.Component {
     }
 
     componentDidMount(){
-      
+        auth().onAuthStateChanged(async user => {
+            if (user) {
+                console.log(user)
+                const uid = user.uid
+                let username = user.displayName
+                let photo = user.photoURL!==null?user.photoURL:''
+                const email = user.email
+                const ref = database().ref('/users/').child(uid);
+                
+                await ref.set({
+                    name: username,
+                    email: email,
+                    photo: photo,
+                    profile: 'user'
+                });
+                await this.setState({activityIndicator: false})
+                await this.props.navigation.navigate('App')
+               
+            }
+            
+        })
     }
 
     facebookLoginBtnHandler = (navigate) => {
@@ -116,13 +137,13 @@ const styles = StyleSheet.create({
         marginBottom: 25
     },
     logo: {
-        width: 80,
-        height: 80,
+        width: 90,
+        height: 90,
         resizeMode: 'stretch'
     },
     logoText: {
         color: 'white',
-        fontSize: 50,
+        fontSize: 45,
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center'
@@ -151,4 +172,3 @@ const styles = StyleSheet.create({
     }
 })
 export default LoginScreen;
-

@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Image, Dimensions, ImageBackground, Alert } fro
 import {TextInput,HelperText, Button} from 'react-native-paper'
 import {COVER, LOGO} from '../../images/index'
 import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { ScrollView } from 'react-native-gesture-handler';
+import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator'
+
 export default class EmailAuthScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -23,19 +23,15 @@ export default class EmailAuthScreen extends React.Component {
         this.state={
             password: '',
             email: '',
-            confirmPassword: '',
-            usernamePattern:/^[a-zA-Z]+ [a-zA-Z]+$/,
-            username: '',
             emailPattern: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@_#\$%\^&\*])(?=.{8,})/,
-            valid: false
+            activityIndicator: false,
         }
     }
 
-    checkValidity(){
-        if(this.state.username.match(this.state.usernamePattern)
-            && this.state.password.match(this.state.passwordPattern) &&
-            this.state.email.match(this.state.emailPattern) && this.state.confirmPassword.match(this.state.password)
+    checkSignInValidity(){
+        if(this.state.password.match(this.state.passwordPattern) &&
+            this.state.email.match(this.state.emailPattern)
         ){
             return true
         }
@@ -43,67 +39,28 @@ export default class EmailAuthScreen extends React.Component {
        
     }
 
-    nextBtnHandler = async () => {
-        this.setState({activityIndicator: true})
+    signInBtnHandler = async () => {
+        this.setState({signIn: true, activityIndicator: true})
         try{
             
-            if(this.checkValidity()){
+            if(this.checkSignInValidity()){
                 await auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then(() => { console.log("error0") })
-                .catch(() => {
-                    auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-                        .then((err) => { 
-                            // console.log("error1")
-                            // alert('Successfully Registered!')
-                        })
-                        .catch((err) => {
-                            console.log(err.message)
-                            alert(err.message)
-                    });
+                .catch((err) => {
+                    console.log(err.message.split(" ").splice(1,err.message.length).toString())
+                    alert(err.message.split(" ").splice(1,err.message.length).join(" "))
                 })
-
             }else{
-                this.setState({activityIndicator: false})
                 alert("Re-check the input fields!")
             }
-           
+            this.setState({activityIndicator: false})
         }catch(err){
             console.log(err)
             this.setState({activityIndicator: false})
             alert(err.message)
         }
-       
-    }
-
-    componentDidMount(){
-        auth().onAuthStateChanged(async user => {
-            if (user) {
-                const uid = user.uid
-                let username = user.displayName
-                let photo = user.photoURL
-                const email = user.email
-                const ref = database().ref('/users/').child(uid);
-                if(username===null){
-                    await user.updateProfile({
-                        displayName: this.state.username,
-                        photoURL: ""
-                    })
-                    username = this.state.username
-                    photo = ''
-                }
-
-                await ref.set({
-                    name: username,
-                    email: email,
-                    photo: photo,
-                    profile: 'user'
-                });
-
-                await this.props.navigation.navigate('App')
-               
-            }
-            
-        })
+        
+        
     }
 
     textInputCallback = (child) => {
@@ -113,34 +70,22 @@ export default class EmailAuthScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <ActivityIndicator title={"Processing"} showIndicator={this.state.activityIndicator} />
                 <ImageBackground
                     source={COVER}
                     style={styles.imgConatiner}
                 >
-                    <ScrollView contentContainerStyle={{flexGrow: 1}} style={{marginTop: 80,marginBottom: 80,flex:1,height: Dimensions.get('window').height}}>
+                    <ScrollView 
+                        contentContainerStyle={{flexGrow: 1}} 
+                        style={{marginTop: 80,marginBottom: 80,flex:1,height: Dimensions.get('window').height}}
+                        showsVerticalScrollIndicator={false}
+                    >
                     <View style={styles.logoBtnCntner}>
                         <View style={styles.logoIconContainer}>
-                            {/* <Image source={LOGO} style={styles.logo} /> */}
-                            <Text style={styles.logoText}>SignUp</Text>
+                            <Image source={LOGO} style={styles.logo} />
+                            <Text style={styles.logoText}>SignIn</Text>
                         </View>
-                        <View style={styles.btnContainer}>
-                            <TextInput
-                                value={this.state.username}
-                                onChangeText={text => this.setState({ username: text })}
-                                placeholder={'Eg. Nimal Perera'}
-                                mode='flat'
-                                style={{borderRadius: 0}}
-                                inlineImageLeft={'account'}
-                                inlineImagePadding={20}
-                                autoCompleteType={'username'}
-                            />
-                            <HelperText
-                                type="error"
-                                visible={!this.state.username.match(this.state.usernamePattern)}
-                            >
-                                Username is invalid!
-                            </HelperText>
-                        </View>
+
                         <View style={styles.btnContainer}>
                             <TextInput
                                 value={this.state.email}
@@ -159,6 +104,7 @@ export default class EmailAuthScreen extends React.Component {
                                 Email is invalid!
                             </HelperText>
                         </View>
+
                         <View style={styles.btnContainer}>
                             <TextInput
                                 value={this.state.password}
@@ -178,34 +124,27 @@ export default class EmailAuthScreen extends React.Component {
                                 Password is invalid
                             </HelperText>
                         </View>
-                        <View style={styles.btnContainer}>
-                            <TextInput
-                                value={this.state.confirmPassword}
-                                onChangeText={text => this.setState({ confirmPassword: text })}
-                                placeholder={'Confirm Password'}
-                                mode='flat'
-                                style={{borderRadius: 0}}
-                                inlineImageLeft={'lock'}
-                                secureTextEntry={true}
-                                inlineImagePadding={20}
-                                autoCompleteType={'password'}
-                            />
-                            <HelperText
-                                type="error"
-                                visible={!this.state.confirmPassword.match(this.state.password)}
+
+                        <View style={[styles.btnContainer, {backgroundColor: 'none'}]}>
+                            <Button
+                                style={[styles.btn,{backgroundColor: 'green', color: 'white'}]}
+                                onPress={()=>this.signInBtnHandler()}
+                                mode='outlined'
                             >
-                                Password does not match!
-                            </HelperText>
+                                SignIn
+                            </Button>
                         </View>
                         <View style={[styles.btnContainer, {backgroundColor: 'none'}]}>
                             <Button
-                                style={styles.btn}
-                                onPress={()=>this.nextBtnHandler()}
+                                style={[styles.btn,{backgroundColor: 'white', color: 'green'}]}
+                                onPress={()=>this.props.navigation.navigate('EmailSignUp')}
                                 mode='contained'
                             >
-                                Next
+                                SignUp
                             </Button>
                         </View>
+                        
+                        
                     </View>
                 
                     </ScrollView>
@@ -243,23 +182,16 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: 70,
-        height: 50
+        height: 70,
+        resizeMode: 'stretch'
     },
     logoText: {
         color: 'white',
-        fontSize: 50,
+        fontSize: 35,
         fontWeight: 'bold',
         marginBottom: 20
     },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        marginBottom: 20
-    },
     imgConatiner: {
-        flex: 1,
         width: Dimensions.get('window').width,
         justifyContent: 'center',
         alignItems: 'center',
