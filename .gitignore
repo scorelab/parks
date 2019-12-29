@@ -2,6 +2,8 @@
 #
 MobileApp/.DS_Store
 
+docs/.sass-cache
+
 #google-json
 MobileApp/android/app/google-services.json
 
