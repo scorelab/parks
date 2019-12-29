@@ -20,7 +20,7 @@ class SearchScreen extends React.Component {
         return {
 
             headerStyle: {
-                backgroundColor: '#0b6623',
+                backgroundColor: '#014421',
             },
             headerTintColor: 'white',
             headerRight: () => <Searchbar
@@ -180,11 +180,9 @@ class SearchScreen extends React.Component {
                     <View>
                         <View style={styles.chipContainer}>
                             <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('all')}>All</Chip>
-                            <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('male')}>Male</Chip>
-                            <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('female')}>Female</Chip>
-                            <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('die')}>Dead</Chip>
-                            <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('group')}>Groups</Chip>
-                            <Chip style={styles.chip} icon="information" onPress={() => this.getObservations('single')}>Single</Chip>
+                            <Chip style={styles.chip} icon="gender-male" onPress={() => this.getObservations('male')}>Male</Chip>
+                            <Chip style={styles.chip} icon="gender-female" onPress={() => this.getObservations('female')}>Female</Chip>
+                            <Chip style={styles.chip} icon="emoticon-dead" onPress={() => this.getObservations('die')}>Dead</Chip>
 
                         </View>
                         <FlatList

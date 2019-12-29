@@ -12,7 +12,7 @@ class ShowPhotoScreen extends React.Component {
         return {
             headerTitle: 'Snapshot',
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#014421',
             },
             headerTintColor: 'white',
         }

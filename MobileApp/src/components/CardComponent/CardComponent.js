@@ -1,37 +1,36 @@
 import * as React from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
-import { Card, Text, Avatar, Modal, Portal, Button,  } from 'react-native-paper';
+import { Card, Text, Avatar } from 'react-native-paper';
 
 
 class CardComponent extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state={
-            visible: false,
-        }
     }
-    _showModal = () => this.setState({ visible: true });
-    _hideModal = () => this.setState({ visible: false });
-  
+
     render() {
         return (
             <View style={styles.container}>
-                <Portal>
-                    <Modal visible={this.state.visible} onDismiss={this._hideModal}>
-                        <Card>
-                            <Card.Cover style={[styles.cover, {borderRadius: 0}]} source={{ uri: this.props.image }} />
-                        </Card>
-                    </Modal>
-                </Portal>
                 <Card style={{ borderRadius: 0 }}>
                     <Card.Title
                         title={this.props.subtitle} subtitle={this.props.title}
                         left={() => <Avatar.Image size={40} source={{ uri: this.props.user }} />}
-                        right={() => <Avatar.Icon style={{ backgroundColor: 'white' }} size={35} color='#4b8b3b' icon="shield-check" />}
+                        right={() => <Avatar.Icon style={{ backgroundColor: '#014421', marginRight:5 }} size={35} color='white' icon="shield-check" />}
                     />
                     {this.props.isNavigate ?
-                        <TouchableOpacity onPress={this._showModal}
+                        <TouchableOpacity
+                            onPress={() => this.props.showPhoto.navigate('showDetailedPhoto',
+                                {
+                                    img: this.props.image,
+                                    title: this.props.title,
+                                    subtitle: this.props.subtitle,
+                                    user: this.props.user,
+                                    content: this.props.result,
+                                    showPhoto: this.props.navigation
+                                }
+                            )
+                            }
                         >
                             <Card.Cover style={styles.cover} source={{ uri: this.props.image }} />
                         </TouchableOpacity>
@@ -51,12 +50,12 @@ class CardComponent extends React.Component {
                                         style={styles.content}
                                         onPress={() => this.props.showPhoto.navigate('showLocationScreen', { location: val[1] })}
                                     >
-                                        <Avatar.Icon size={36} color='#4b8b3b' icon={val[0]} />
+                                        <Avatar.Icon size={36} color='#014421' icon={val[0]} />
                                         <Text> View location</Text>
                                     </TouchableOpacity>
                                     :
                                     <View key={i} style={styles.content}>
-                                        <Avatar.Icon size={36} color='#4b8b3b' icon={val[0]} />
+                                        <Avatar.Icon size={36} color='#014421' icon={val[0]} />
                                         <Text> {val[1]}</Text>
                                     </View>
                             )
@@ -79,7 +78,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width
     },
     cover: {
-        height: 300
+        height: 300,
+        width: Dimensions.get('window').width
     },
     content: {
         marginTop: 5,
@@ -90,4 +90,3 @@ const styles = StyleSheet.create({
 })
 
 export { CardComponent };
-

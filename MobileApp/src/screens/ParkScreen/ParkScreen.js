@@ -13,7 +13,7 @@ class ParkScreen extends React.Component {
         return {
             headerTitle: "Sri Lankan National Parks",
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#014421',
             },
             headerTintColor: 'white',
             headerRight: () => <Button onPress={() => navigation.navigate('Profile')} mode='contained' style={{ marginRight: 5 }}>Profle</Button>
@@ -26,44 +26,50 @@ class ParkScreen extends React.Component {
                 <ScrollView style={{ width: Dimensions.get('window').width }}>
                 <View style={{flexDirection: 'row', flexWrap: 'wrap',}}>
                 <TileComponent 
-                    img={'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/6a/e4/e6.jpg?fit=crop&w=320&h=140'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Parc_national_de_Uda_Walawa_Sri-Lanka_%284%29.jpg/1280px-Parc_national_de_Uda_Walawa_Sri-Lanka_%284%29.jpg'}
                     title={'Udawalawa National Park'}
                     subtitle={'Udawalawa,  Sri Lanka'}
+                    code={'unp'}
                     width={1.02}
                     next={this.props.navigation}
                 />
                 <TileComponent 
-                    img={'https://images.thrillophilia.com/image/upload/s--ZLP8UoiG--/c_fill,f_auto,fl_strip_profile,h_775,q_auto,w_1600/v1/images/photos/000/053/505/original/1558512267_elephants-murchison.jpg.jpg?1558512267'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Yala_Beach.jpg/1920px-Yala_Beach.jpg'}
                     title={'Yala National Park'}
                     subtitle={'Yala, Sri Lanka'}
+                    code={'ynp'}
                     width={2.1}
                     next={this.props.navigation}
                 />
                 <TileComponent 
-                    img={'https://media-cdn.tripadvisor.com/media/photo-s/0d/51/3a/2e/birds-at-kumana.jpg'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Kumana_National_Park_%28Kudumbigala_Sanctuary%29.JPG/1280px-Kumana_National_Park_%28Kudumbigala_Sanctuary%29.JPG'}
                     title={'Kumana National Park'}
                     subtitle={'Kumana, Sri Lanka'}
+                    code={'knp'}
                     width={2.1}
                     next={this.props.navigation}
                 />
                 <TileComponent 
-                    img={'https://www.srilankansafari.com/images/national-parks-and-nature-reserves-in-sri-lanka/wilpattu-national-park-in-sri-lanka/wilpattu-national-park-in-sri-lanka.jpg'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/WilpattuNationalPark-April2014_%283%29.JPG/1920px-WilpattuNationalPark-April2014_%283%29.JPG'}
                     title={'Wilpattu National Park'}
                     subtitle={'Willpattu, Sri Lanka'}
+                    code={'wnp'}
                     width={1.02}
                     next={this.props.navigation}
                 />
                 <TileComponent 
-                    img={'https://www.swantour.com/blogs/wp-content/uploads/2019/03/Wasgamuwa-National-Park.jpg'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/WasgamuwaNationalPark-September2014_%281%29.JPG/1920px-WasgamuwaNationalPark-September2014_%281%29.JPG'}
                     title={'Wasgamuwa National Park'}
                     subtitle={'Wasgamuwa, Sri Lanka'}
+                    code={'wnp'}
                     width={2.1}
                     next={this.props.navigation}
                 />
                 <TileComponent 
-                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Wildlife_Preserve_Near_Kirinda%2C_Sri_Lanka.jpg/1280px-Wildlife_Preserve_Near_Kirinda%2C_Sri_Lanka.jpg'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Wildlife_Preserve_Near_Kirinda%2C_Sri_Lanka.jpg/284px-Wildlife_Preserve_Near_Kirinda%2C_Sri_Lanka.jpg'}
                     title={'Bundala National Park'}
                     subtitle={'Bundala, Sri Lanka'}
+                    code={'bnp'}
                     width={2.1}
                     next={this.props.navigation}
                 />
@@ -71,13 +77,15 @@ class ParkScreen extends React.Component {
                     img={'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Wild_horses_%28Delft_Island%29.JPG/1280px-Wild_horses_%28Delft_Island%29.JPG'}
                     title={'Delft'}
                     subtitle={'Delft, Sri Lanka'}
+                    code={'dnp'}
                     width={2.1}
                     next={this.props.navigation}
                 />
                 <TileComponent 
-                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Adam%27s_Bridge_-_Mannar_-_Sri_Lanka_%2828605256837%29.jpg/1280px-Adam%27s_Bridge_-_Mannar_-_Sri_Lanka_%2828605256837%29.jpg'}
+                    img={'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Adams_Bridge_aerial.jpg/800px-Adams_Bridge_aerial.jpg'}
                     title={'Adam’s Bridge'}
                     subtitle={'Adam’s Bridge, Sri Lanka'}
+                    code={'anp'}
                     width={2.1}
                     next={this.props.navigation}
                 />

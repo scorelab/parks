@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from 'react-native'
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity,Alert, ImageBackground } from 'react-native'
 import CameraRoll from "@react-native-community/cameraroll";
 import { ToggleButtonGroupHorizontal, TextInputGroupHorizontal, UneditableComponent } from '../../components/FormComponents/FormComponents'
 import Geolocation from '@react-native-community/geolocation';
@@ -10,6 +10,7 @@ import { Button } from 'react-native-paper'
 import { generateUUID } from '../../components/UserDataHandling/UserDataHandling'
 import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator'
 import { googleMapAPIKey } from '../../config/config'
+import {SmallDialog} from '../../components/SmallDialog/SmallDialog'
 
 
 class FormScreen extends React.Component {
@@ -19,7 +20,7 @@ class FormScreen extends React.Component {
         return {
             headerTitle: 'Observation',
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#014421',
             },
             headerTintColor: 'white',
             headerRight: () => <Button style={{ margin: 5 }} mode="contained" onPress={() => params.handlePress()}>Share</Button>
@@ -28,7 +29,9 @@ class FormScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        let date = new Date().toString().split(" ")
+        let date = new Date()
+        let time = date.getTime()
+        date = date.toString().split(" ")
         date = date.splice(0, date.length - 2)
         this.state = {
             photos: this.props.navigation.getParam('dataUri'),
@@ -41,61 +44,67 @@ class FormScreen extends React.Component {
             notes: '',
             park: '',
             uid: '',
+            uname: '',
+            uimg: '',
             type: '',
+            time: time,
+            sDialogVisible: false
         };
 
     }
 
     componentDidMount() {
         this.findCoordinates()
+        this.getUserData()
         this.props.navigation.setParams({
             handlePress: () => this.uploadData(),
         });
     }
 
-    uploadData = async function () {
-        // Get the users ID
-        console.log("Pressed")
+    getUserData = async function () {
+        const uid =await auth().currentUser.uid;
+        const user = await database().ref(`/users/${uid}`).once('value')
+        const uname = user.val().name
+        const uimg = user.val().photo
         await this.setState({
+            uid: uid,
+            uname: uname,
+            uimg: uimg
+        })
+    }
+
+    uploadData = async function () {
+        this.setState({
             activityIndicator: true
         })
-        const uid = auth().currentUser.uid;
-        const uname = auth().currentUser.displayName
-        const uimg = auth().currentUser.photoURL
-
-        console.log(auth().currentUser)
-        // Create a reference
+        
         const ref = database().ref(`/usersObservations`);
         const randomID = generateUUID()
-        console.log(randomID)
         const storageRef = storage().ref('/observations/' + randomID + '.jpeg')
-
-        await storageRef.putFile(this.props.navigation.getParam('dataUri'))
-
+        await storageRef.putFile(this.state.photos)
         const url = await storageRef.getDownloadURL()
-        console.log(url)
-        let time = new Date().getTime();
+
         await ref.push({
             photoURL: url,
             isAlive: this.state.isAlive,
             location: this.state.location,
-            time: time,
+            time: this.state.time,
             isAlive: this.state.isAlive,
             address: this.state.address,
             verified: this.state.verified,
             notes: this.state.notes,
             park: this.state.park,
-            uid: uid,
-            uname: uname,
-            uimg: uimg,
+            uid: this.state.uid,
+            uname: this.state.uname,
+            uimg: this.state.uimg,
             type: this.state.type,
-
+            address: this.state.address.toString()
         });
 
         await this.setState({
             activityIndicator: false,
+            sDialogVisible: true
         })
-       this.props.navigation.navigate('CameraViewScreen')
 
     }
 
@@ -127,9 +136,9 @@ class FormScreen extends React.Component {
                         .then((response) => response.json())
                         .then((responseJson) => {
                             this.setState({
-                                address: responseJson.results.length > 0 ? responseJson.results[0].formatted_address.split(","): "Unnamed location"
+                                address: responseJson.results.length > 0 ? responseJson.results[0].formatted_address.split(",") : "Unnamed location"
                             })
-                            console.log('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson.results[0].formatted_address));
+                            console.log('ADDRESS GEOCODE: => ' + JSON.stringify(responseJson.results[0].formatted_address));
                         })
                     this.setState({ location: [initialPosition['coords']['longitude'], initialPosition['coords']['latitude']] });
                 },
@@ -145,20 +154,26 @@ class FormScreen extends React.Component {
         let obj = {}
         obj[type] = childData[0]
         this.setState(obj)
+        console.log(childData)
+    }
 
-        console.log(this.state)
-
-        console.log(childData[1] + ": " + childData[0])
+    smallDialogCallback =(child) => {
+        this.setState({
+            sDialogVisible: child
+        })
+        if(!child){
+            this.props.navigation.navigate('CameraViewScreen')
+        }
     }
 
     render() {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <ImageBackground blurRadius={10} style={{ width: "100%" }} source={{ uri: this.props.navigation.getParam('dataUri') }}>
+                <ImageBackground blurRadius={10} style={{ width: "100%" }} source={{ uri: this.state.photos }}>
                     <TouchableOpacity
                         style={styles.imgHolder}
-                        onPress={() => navigate('showPhoto', { img: this.props.navigation.getParam('dataUri') })}
+                        onPress={() => navigate('showPhoto', { img: this.state.photos })}
                     >
                         <Image
                             style={{
@@ -166,13 +181,21 @@ class FormScreen extends React.Component {
                                 height: 250,
                                 borderRadius: 40
                             }}
-                            source={{ uri: this.props.navigation.getParam('dataUri') }}
+                            source={{ uri: this.state.photos }}
                         />
                     </TouchableOpacity>
                 </ImageBackground>
 
                 <View>
                     <ActivityIndicator title={"Uploading"} showIndicator={this.state.activityIndicator} />
+                </View>
+                <View>
+                    <SmallDialog 
+                        parentCallback={this.smallDialogCallback} 
+                        title={'Congratulations!!!'} 
+                        content={'You have contributed our animal conservation project. Keep contributing.'} 
+                        sDialogVisible={this.state.sDialogVisible}
+                    />
                 </View>
 
                 <ScrollView>
@@ -201,7 +224,7 @@ class FormScreen extends React.Component {
                         isNumeric={false}
                     />
                     <View style={{width: "100%", flexDirection: 'row-reverse'}}>
-                        <Button style={{ height: 50, justifyContent: 'center', margin: 5, backgroundColor: 'green' }} mode="outlined" onPress={() => this.uploadData()}>Share</Button>
+                        <Button style={{ height: 50, justifyContent: 'center', margin: 5, backgroundColor: '#014421' }} mode="outlined" onPress={() => this.uploadData()}>Share</Button>
                     </View>
                 </ScrollView>
 
