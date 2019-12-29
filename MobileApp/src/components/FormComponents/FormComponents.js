@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native'
 import { RadioButton,Switch, Text, Avatar, Divider, TextInput } from 'react-native-paper';
 
-export class RadioButtonGroupVertical extends React.Component {
+class RadioButtonGroupVertical extends React.Component {
 
     constructor(props) {
         super(props);
@@ -26,7 +26,7 @@ export class RadioButtonGroupVertical extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Avatar.Icon size={45} color='#4b8b3b' icon="comment-question" />
+                    <Avatar.Icon size={45} color='#014421' icon="comment-question" />
                     <Text style={styles.title}>{this.props.title} </Text>
                 </View>
                 <View style={{ marginLeft: 10 }}>
@@ -50,7 +50,7 @@ export class RadioButtonGroupVertical extends React.Component {
     }
 }
 
-export class RadioButtonGroupHorizontal extends React.Component {
+class RadioButtonGroupHorizontal extends React.Component {
 
     constructor(props) {
         super(props);
@@ -73,7 +73,7 @@ export class RadioButtonGroupHorizontal extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.buttonGroup}>
-                    <Avatar.Icon size={45} color='#4b8b3b' icon="comment-question" />
+                    <Avatar.Icon size={45} color='#014421' icon="comment-question" />
                     <Text style={styles.title}>{this.props.title} </Text>
                     <RadioButton.Group
                         onValueChange={value => this.radioButtonOnChangeHandler(value)}
@@ -96,7 +96,7 @@ export class RadioButtonGroupHorizontal extends React.Component {
     }
 }
 
-export class ToggleButtonGroupHorizontal extends React.Component {
+class ToggleButtonGroupHorizontal extends React.Component {
 
     constructor(props) {
         super(props);
@@ -106,27 +106,21 @@ export class ToggleButtonGroupHorizontal extends React.Component {
             type: this.props.type
         }
     }
-
-    sendData = () => {
-        this.props.parentCallback([this.state.feild, this.state.type]);
-    }
-
-    radioButtonOnChangeHandler = (value) => {
-        this.setState({ feild: value })
-        this.sendData()
+    
+    radioButtonOnChangeHandler = () => {
+        this.setState({ feild: this.state.feild===1?0:1 })
+        this.props.parentCallback([this.state.feild===1?0:1, this.state.type]);
     }
 
     render() {
         return (
             <View style={[styles.container,{height: 55}]}>
                 <View style={[styles.buttonGroup]}>
-                    <Avatar.Icon size={45} color='#4b8b3b' icon={this.props.icon} />
+                    <Avatar.Icon size={45} color='#014421' icon={this.props.icon} />
                     <Text style={[styles.title, {flexGrow: 1}]}>{this.props.title} </Text>
                     <Switch
                         value={this.state.feild===1?true:false}
-                        onValueChange={() =>
-                        { this.setState({ feild: (this.state.feild===1?0:1) }); }
-                        }
+                        onValueChange={this.radioButtonOnChangeHandler}
                     />
                 </View>
                 <Divider />
@@ -135,7 +129,7 @@ export class ToggleButtonGroupHorizontal extends React.Component {
     }
 }
 
-export class TextInputGroupHorizontal extends React.Component {
+class TextInputGroupHorizontal extends React.Component {
 
     constructor(props) {
         super(props);
@@ -158,7 +152,7 @@ export class TextInputGroupHorizontal extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.buttonGroup}>
-                    <Avatar.Icon size={45} color='#4b8b3b' icon="comment-question" />
+                    <Avatar.Icon size={45} color='#014421' icon="comment-question" />
                     <Text style={styles.title}>{this.props.title} </Text>
                 </View>
                 <View style={styles.textInput}>
@@ -178,7 +172,7 @@ export class TextInputGroupHorizontal extends React.Component {
     }
 }
 
-export class UneditableComponent extends React.Component {
+class UneditableComponent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -188,7 +182,7 @@ export class UneditableComponent extends React.Component {
         return (
             <View>
                 <View style={styles.uneditableComponent}>
-                    <Avatar.Icon size={45} color='#4b8b3b' icon={this.props.icon} />
+                    <Avatar.Icon size={45} color='#014421' icon={this.props.icon} />
                     {/* <Text style={styles.title}>{this.props.title} </Text> */}
                     <Text style={styles.title}>{this.props.values.map((val, i) => { return <Text key={i}>{val.toString()} </Text> })}</Text>
                 </View>
@@ -197,35 +191,6 @@ export class UneditableComponent extends React.Component {
 
         );
     }
-}
-
-export class TextInputWithIcon extends React.Component{
-    constructor(props){
-        super(props)
-    }
-
-    render(){
-        return (
-            <View style={styles.btnContainer}>
-                <TextInput
-                    value={this.state.username}
-                    onChangeText={text => this.setState({ username: text })}
-                    placeholder={'Eg. Nimal Perera'}
-                    mode='flat'
-                    style={{borderRadius: 0}}
-                    inlineImageLeft={'account'}
-                    inlineImagePadding={20}
-                />
-                <HelperText
-                    type="error"
-                    visible={!this.state.username.match(this.state.usernamePattern)}
-                >
-                    Username is invalid!
-                </HelperText>
-            </View>
-        )
-    }
-
 }
 
 const styles = StyleSheet.create({
@@ -262,3 +227,6 @@ const styles = StyleSheet.create({
         height: 55
     }
 })
+
+export { RadioButtonGroupVertical, RadioButtonGroupHorizontal, TextInputGroupHorizontal, UneditableComponent, ToggleButtonGroupHorizontal };
+

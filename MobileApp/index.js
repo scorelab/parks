@@ -34,7 +34,7 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: 'white',
-    accent: '#4b8b3b',
+    accent: '#014421',
   },
   fonts: configureFonts(fontConfig),
 };
@@ -42,7 +42,7 @@ const theme = {
 export default function Main() {
     return (
       <PaperProvider theme={theme}>
-        <StatusBar backgroundColor="#346811" barStyle="light-content" />
+        <StatusBar backgroundColor="#014421" barStyle="light-content" />
         <App />
       </PaperProvider>
     );

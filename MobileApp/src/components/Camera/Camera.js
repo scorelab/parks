@@ -28,6 +28,7 @@ class Camera extends PureComponent {
   render() {
     const { isFocused } = this.props
     const { hasCameraPermission } = this.state;
+    console.log(hasCameraPermission)
     if (hasCameraPermission === null) {
       return <View />;
     } else if (hasCameraPermission === false) {
@@ -65,7 +66,7 @@ class Camera extends PureComponent {
               onPress={() => this.setState({ flashOn: !this.state.flashOn })}
 
             >
-              <Avatar.Icon size={60} color='#4b8b3b' icon={this.state.flashOn ? 'flash' : 'flash-off'} />
+              <Avatar.Icon size={60} color='#014421' icon={this.state.flashOn ? 'flash' : 'flash-off'} />
             </TouchableOpacity>
           </RNCamera>
           <View style={styles.bottom}>

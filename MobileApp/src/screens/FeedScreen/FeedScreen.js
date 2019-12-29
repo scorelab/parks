@@ -11,24 +11,27 @@ class FeedScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = [] } = navigation.state
-        console.log(params.userPhoto)
         return {
             headerTitle: 'Home',
             headerStyle: {
-                backgroundColor: '#0b6623',
+                backgroundColor: '#014421',
             },
             headerTintColor: '#fff',
 
             headerRight: () => <TouchableOpacity
                 onPress={() => navigation.navigate("Profile")}
             >
-                {params.userPhoto!==null?
+                {params.userPhoto!==''?
                     <Avatar.Image
                         style={{ marginRight: 5, padding: 0 }}
                         size={35} source={{ uri: params.userPhoto }}
                     />
                 :
-                    <Avatar.Text color={'green'} size={35} style={{ marginRight: 5, padding: 0 }} label={params.userName.substr(0,2).toUpperCase()} />
+                    <Avatar.Text 
+                        size={35} 
+                        style={{ marginRight: 5, padding: 0,backgroundColor: 'white' }} 
+                        label={params.userName.substr(0,2).toUpperCase()} 
+                    />
                 }
                 
             </TouchableOpacity>,
@@ -46,21 +49,19 @@ class FeedScreen extends React.Component {
 
     componentDidMount() {
         this.getUserData()
-        // database().ref('/users/').on("value", snapshot=>{
-        //     this.getObservations()
-        // })
         this.getObservations()
     }
 
     getUserData = async function () {
-        // Fetch the data snapshot
         const user = auth().currentUser;
-        console.log(user)
-        this.props.navigation.setParams({
-            userPhoto: user.photoURL,
-            userName: user.displayName
+        // console.log(user)
+        const uid = user.uid
+        const ref = await database().ref('/users/').child(uid).once('value');
+        const data = ref.val()
+        await this.props.navigation.setParams({
+            userPhoto: data.photo,
+            userName: data.name
         })
-        // console.log(snapshot.val().photo)
     }
 
     getObservations = async() =>{
@@ -242,4 +243,3 @@ const styles = StyleSheet.create({
     }
 })
 export default FeedScreen;
-

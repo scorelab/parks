@@ -14,7 +14,7 @@ class ShowDetailedPhotoScreen extends React.Component {
         return {
             headerTitle: 'Observation',
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#014421',
             },
             headerTintColor: 'white',
         }

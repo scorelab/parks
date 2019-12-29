@@ -18,6 +18,7 @@ class TileComponent extends React.Component {
                         img: this.props.img,
                         title: this.props.title,
                         subtitle: this.props.subtitle,
+                        code: this.props.code
                     }
                 )
                 }

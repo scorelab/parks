@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Image, Text, Dimensions, StyleSheet, Linking } from 'react-native'
 import { Divider } from 'react-native-paper';
-import {SLOGO, TLOGO, LOGOB} from '../../images/index'
+import {SLOGO, TLOGO, LOGO} from '../../images/index'
 
 class AboutScreen extends React.Component {
 
@@ -11,9 +11,9 @@ class AboutScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            headerTitle: "About DWC",
+            headerTitle: "About Sri Lankan National Park App",
             headerStyle: {
-                backgroundColor: '#4b8b3b',
+                backgroundColor: '#014421',
             },
             headerTintColor: 'white',
 
@@ -24,7 +24,7 @@ class AboutScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Image style={styles.logo} source={LOGOB} />
+                <Image style={styles.logo} source={LOGO} />
                 <Text style={styles.bigText}> Developed By</Text>
                 <View style={styles.cmpLogoCntner}>
                     <Image style={styles.companyLogos} source={SLOGO} />
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width
     },
     logo: {
-        width: 80,
-        height: 60,
+        width: 90,
+        height: 90,
         margin: 10,
         resizeMode: 'stretch'
     },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     companyLogos: {
-        width: 100,
+        width: 200,
         height: 100,
         resizeMode: 'stretch',
         borderRadius: 20

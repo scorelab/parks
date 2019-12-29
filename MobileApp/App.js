@@ -30,6 +30,7 @@ import ParkScreen from './src/screens/ParkScreen/ParkScreen'
 import ParkDetails from './src/screens/ParkDetails/ParkDetails'
 import EmailAuthSignInScreen from './src/screens/EmailAuthScreen/EmailAuthSignInScreen'
 import EmailAuthSignUpScreen from './src/screens/EmailAuthScreen/EmailAuthSignUpScreen'
+import SpeciesDetailsScreen from './src/screens/SpeciesDetailsScreen/SpeciesDetailsScreen'
 
 import {Avatar} from 'react-native-paper'
 
@@ -50,6 +51,8 @@ const SelectStack = createStackNavigator({
   Park: ParkScreen,
   ParkDetails: ParkDetails,
   Profile: ProfileScreen,
+  AboutScreen: AboutScreen,
+  SpeciesDetailsScreen: SpeciesDetailsScreen
 },
 
 );
@@ -60,7 +63,6 @@ const FeedStack = createStackNavigator({
   showDetailedPhoto: ShowDetailedPhotoScreen ,
   showLocationScreen: showLocationScreen,
   Profile: ProfileScreen,
-  AboutScreen: AboutScreen
 });
 
 const CameraStack = createStackNavigator({
@@ -95,7 +97,7 @@ const MainTabs = createMaterialBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: [],
       tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#4b8b3b' icon="nature-people" /></View>
+        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="nature-people" /></View>
       ),
     },
   },
@@ -104,7 +106,7 @@ const MainTabs = createMaterialBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: [],
       tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#4b8b3b' icon="home-variant" /></View>
+        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="home-variant" /></View>
       ),
     },
   },
@@ -113,7 +115,7 @@ const MainTabs = createMaterialBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: [],
       tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#4b8b3b' icon="camera-iris" /></View>
+        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="camera-iris" /></View>
       ),
     },
   },
@@ -122,7 +124,7 @@ const MainTabs = createMaterialBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: [],
       tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#4b8b3b' icon="image-search" /></View>
+        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="image-search" /></View>
       ),
     },
   },
@@ -131,7 +133,7 @@ const MainTabs = createMaterialBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: [],
       tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#4b8b3b' icon="google-maps" /></View>
+        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="google-maps" /></View>
       ),
     },
   },
