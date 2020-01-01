@@ -79,7 +79,7 @@ class ParkDetails extends React.Component {
                                         descriptionStyle={{fontSize:15, color: 'white'}}
                                         description={val[1]}
                                         titleNumberOfLines={2}
-                                        right={props => <Avatar.Image size={150} source={{ uri: val[2]}}/>}
+                                        right={props => <Avatar.Image style={{backgroundColor: '#F0FFFF'}} size={150} source={{ uri: val[2]}}/>}
                                     />
                                 </TouchableOpacity>
                             )
