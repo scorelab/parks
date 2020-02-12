@@ -19,7 +19,7 @@ export default class App extends Component {
                         visible={this.props.showIndicator}>
                         <Dialog.Content>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <ActivityIndicator size="large" color="#4b8b3b" /><Text style={{ marginLeft: 10 }}>{this.props.title}...</Text>
+                                <ActivityIndicator size="large" color="#4b8b3b" /><Text style={{ marginLeft: 10 }}>{this.props.title}</Text>
                             </View>
 
                         </Dialog.Content>

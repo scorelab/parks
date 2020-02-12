@@ -24,13 +24,13 @@ class ParkScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <ScrollView style={{ width: Dimensions.get('window').width }}>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap',}}>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
                 <TileComponent 
                     img={'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Parc_national_de_Uda_Walawa_Sri-Lanka_%284%29.jpg/1280px-Parc_national_de_Uda_Walawa_Sri-Lanka_%284%29.jpg'}
                     title={'Udawalawa National Park'}
                     subtitle={'Udawalawa,  Sri Lanka'}
                     code={'unp'}
-                    width={1.02}
+                    width={'96.5%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -38,7 +38,7 @@ class ParkScreen extends React.Component {
                     title={'Yala National Park'}
                     subtitle={'Yala, Sri Lanka'}
                     code={'ynp'}
-                    width={2.1}
+                    width={'47%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -46,7 +46,7 @@ class ParkScreen extends React.Component {
                     title={'Kumana National Park'}
                     subtitle={'Kumana, Sri Lanka'}
                     code={'knp'}
-                    width={2.1}
+                    width={'47%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -54,7 +54,7 @@ class ParkScreen extends React.Component {
                     title={'Wilpattu National Park'}
                     subtitle={'Willpattu, Sri Lanka'}
                     code={'wnp'}
-                    width={1.02}
+                    width={'96.5%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -62,7 +62,7 @@ class ParkScreen extends React.Component {
                     title={'Wasgamuwa National Park'}
                     subtitle={'Wasgamuwa, Sri Lanka'}
                     code={'wnp'}
-                    width={2.1}
+                    width={'47%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -70,7 +70,7 @@ class ParkScreen extends React.Component {
                     title={'Bundala National Park'}
                     subtitle={'Bundala, Sri Lanka'}
                     code={'bnp'}
-                    width={2.1}
+                    width={'47%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -78,7 +78,7 @@ class ParkScreen extends React.Component {
                     title={'Delft'}
                     subtitle={'Delft, Sri Lanka'}
                     code={'dnp'}
-                    width={2.1}
+                    width={'47%'}
                     next={this.props.navigation}
                 />
                 <TileComponent 
@@ -86,7 +86,7 @@ class ParkScreen extends React.Component {
                     title={'Adam’s Bridge'}
                     subtitle={'Adam’s Bridge, Sri Lanka'}
                     code={'anp'}
-                    width={2.1}
+                    width={'47%'}
                     next={this.props.navigation}
                 />
                 

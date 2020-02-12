@@ -64,8 +64,8 @@ class DiscoverScreen extends React.Component {
                 title: time,
                 cordinates:
                 {
-                    latitude: location[1],
-                    longitude: location[0]
+                    latitude: parseFloat(location[1]),
+                    longitude: parseFloat(location[0])
                 },
                 description: address.toString()
 
@@ -87,8 +87,8 @@ class DiscoverScreen extends React.Component {
                 await Geolocation.getCurrentPosition(
                     async position => {
                         const initialPosition = position;
-                        const lon = initialPosition['coords']['longitude']
-                        const lat = initialPosition['coords']['latitude']
+                        const lon = parseFloat(initialPosition['coords']['longitude'])
+                        const lat = parseFloat(initialPosition['coords']['latitude'])
                         await this.setState({ location: [lon, lat], activityIndicator: false });
                     },
                     error => console.log('Error', JSON.stringify(error)),

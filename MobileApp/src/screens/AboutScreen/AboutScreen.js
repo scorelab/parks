@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, Image, Text, Dimensions, StyleSheet, Linking } from 'react-native'
+import { View, Image, Text, Dimensions, StyleSheet, Linking,ImageBackground } from 'react-native'
 import { Divider } from 'react-native-paper';
-import {SLOGO, TLOGO, LOGO} from '../../images/index'
+import {SLOGO, COVER, LOGO} from '../../images/index'
 
 class AboutScreen extends React.Component {
 
@@ -23,7 +23,7 @@ class AboutScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-
+ <ImageBackground source={COVER} style={styles.imgConatiner}>
                 <Image style={styles.logo} source={LOGO} />
                 <Text style={styles.bigText}> Developed By</Text>
                 <View style={styles.cmpLogoCntner}>
@@ -41,6 +41,7 @@ class AboutScreen extends React.Component {
 
                     </Text>
                 </View>
+                </ImageBackground>
             </View>
 
         );
@@ -87,7 +88,13 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 17,
         margin: 5,
-        fontWeight: '100'
-    }
+        fontWeight: '100',
+        padding: 10
+    },
+    imgConatiner: {
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        height: Dimensions.get('window').height,
+      }
 })
 export default AboutScreen;

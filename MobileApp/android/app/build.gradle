@@ -131,10 +131,9 @@ android {
         applicationId "com.dwc"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.0"
         multiDexEnabled true
-        versionName "1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [GoogleMapAPIKey:"AIzaSyAzZ0St9RVLUhRW9m6I9A-ULfWmjbycX5g" ]
         resConfigs "en"

@@ -1,0 +1,8 @@
+a.active {
+  background-color: #008000 !important;
+  color: white;
+}
+
+a.active > div > svg {
+  color: white;
+}

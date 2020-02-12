@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, Dimensions, TouchableNativeFeedback } from 'react-native'
 import { Card, Text, Avatar } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 class TileComponent extends React.Component {
 
@@ -24,7 +24,7 @@ class TileComponent extends React.Component {
                 }
             >
                 
-            <Card style={[styles.container, {width: Dimensions.get('window').width/this.props.width}]}>
+            <Card style={[styles.container, {width: wp(this.props.width)}]}>
                 
                 <TouchableOpacity>
                     <Card.Cover style={styles.cover} source={{ uri: this.props.img }} />
