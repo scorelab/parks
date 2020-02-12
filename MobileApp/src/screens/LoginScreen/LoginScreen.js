@@ -11,7 +11,7 @@ import {
 import {facebookLogin} from '../../components/FaceBookLogin/FaceBookLogin';
 import {googleLogin} from '../../components/GoogleLogin/GoogleLogin';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COVER, TREES, LOGO} from '../../images/index';
+import {COVER} from '../../images/index';
 
 class LoginScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
