@@ -1,5 +1,5 @@
 package com.dwc;
-
+import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
