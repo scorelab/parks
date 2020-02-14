@@ -56,7 +56,7 @@ class FormScreen extends React.Component {
       address: [],
       date: date,
       isAlive: 1,
-      verified: false,
+      verified: 'pending',
       notes: '',
       park: '',
       uid: '',
@@ -65,6 +65,7 @@ class FormScreen extends React.Component {
       type: '',
       time: time,
       sDialogVisible: false,
+      leave: false,
     };
   }
 
@@ -74,6 +75,12 @@ class FormScreen extends React.Component {
     this.props.navigation.setParams({
       handlePress: () => this.uploadData(),
     });
+  }
+
+  componentDidUpdate() {
+    if (this.state.leave) {
+      this.props.navigation.navigate('CameraViewScreen');
+    }
   }
 
   getUserData = async function() {
@@ -97,7 +104,9 @@ class FormScreen extends React.Component {
 
     const ref = database().ref(`/usersObservations`);
     const randomID = generateUUID();
-    const storageRef = storage().ref('/observations/' + randomID + '.jpeg');
+    const storageRef = storage().ref(
+      '/observations/original/' + randomID + '.jpeg',
+    );
     await storageRef.putFile(this.state.photos);
     const url = await storageRef.getDownloadURL();
 
@@ -144,10 +153,8 @@ class FormScreen extends React.Component {
       Geolocation.getCurrentPosition(
         position => {
           const initialPosition = position;
-          console.log(initialPosition);
           const lon = initialPosition['coords']['longitude'];
           const lat = initialPosition['coords']['latitude'];
-          console.log(lon, lat, googleMapAPIKey);
           fetch(
             'https://maps.googleapis.com/maps/api/geocode/json?address=' +
               lat +
@@ -180,7 +187,7 @@ class FormScreen extends React.Component {
           console.log('Error', JSON.stringify(error));
           this.props.navigation.navigate('CameraViewScreen');
           return Alert.alert(
-            'Permission denied.',
+            'Location Error',
             'Please turn on the location access.',
           );
         },
@@ -189,7 +196,7 @@ class FormScreen extends React.Component {
     } else {
       this.props.navigation.navigate('CameraViewScreen');
       return Alert.alert(
-        'Permission denied.',
+        'Permission Denied',
         'Please allow the location permission.',
       );
     }
@@ -200,16 +207,14 @@ class FormScreen extends React.Component {
     let obj = {};
     obj[type] = childData[0];
     this.setState(obj);
-    console.log(childData);
   };
 
   smallDialogCallback = child => {
+    console.log(child);
     this.setState({
       sDialogVisible: child,
+      leave: !child,
     });
-    if (!child) {
-      this.props.navigation.navigate('CameraViewScreen');
-    }
   };
 
   render() {
@@ -300,7 +305,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignSelf: 'stretch',
-    //backgroundColor: getRandomColor(),
   },
   welcome: {
     fontSize: 25,

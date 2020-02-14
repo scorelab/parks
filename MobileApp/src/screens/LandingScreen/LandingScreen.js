@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Image, Dimensions, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {LOGO} from '../../images/index';
 import SplashScreen from 'react-native-smart-splash-screen';

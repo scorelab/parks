@@ -6,6 +6,7 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
 import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator';
@@ -13,6 +14,7 @@ import {CardComponent} from '../../components/CardComponent/CardComponent';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import {generateResult} from '../../components/UserDataHandling/UserDataHandling';
+import {checkNet} from '../../components/NetInfo/NetInfo';
 
 class FeedScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -59,6 +61,13 @@ class FeedScreen extends React.Component {
   }
 
   getUserData = async function() {
+    let hasNet = await checkNet();
+    if (hasNet !== true) {
+      Alert.alert(
+        'Connectivity Error',
+        'Please check your internet connectivity',
+      );
+    }
     const user = auth().currentUser;
     // console.log(user)
     const uid = user.uid;
@@ -78,7 +87,7 @@ class FeedScreen extends React.Component {
     const data = await database()
       .ref(`/usersObservations/`)
       .orderByKey()
-      .limitToLast(5)
+      .limitToLast(7)
       .once('value');
 
     const val = data.val();
@@ -93,6 +102,8 @@ class FeedScreen extends React.Component {
       let crntTime = new Date().getTime();
       let dif = crntTime - time;
       if (dif <= 604800000) {
+        continue;
+      } else if (val[i].verified !== 'verified') {
         continue;
       }
       let photUrl = val[i].photoURL;
@@ -139,7 +150,7 @@ class FeedScreen extends React.Component {
       .ref(`/usersObservations/`)
       .orderByKey()
       .endAt(lastVisible)
-      .limitToLast(5)
+      .limitToLast(7)
       .once('value');
 
     const val = data.val();
@@ -154,6 +165,8 @@ class FeedScreen extends React.Component {
       let crntTime = new Date().getTime();
       let dif = crntTime - time;
       if (dif <= 604800000) {
+        continue;
+      } else if (val[i].verified !== 'verified') {
         continue;
       }
       let photUrl = val[i].photoURL;

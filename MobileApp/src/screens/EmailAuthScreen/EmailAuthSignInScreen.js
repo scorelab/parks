@@ -112,9 +112,7 @@ export default class EmailAuthScreen extends React.Component {
               </View>
 
               <View style={styles.btnContainer}>
-                <Text style={{...styles.fieldText, marginTop: 50}}>
-                  Email
-                </Text>
+                <Text style={{...styles.fieldText, marginTop: 50}}>Email</Text>
                 <TextInput
                   value={this.state.email}
                   onChangeText={text => this.setState({email: text})}
@@ -204,7 +202,7 @@ export default class EmailAuthScreen extends React.Component {
 const styles = StyleSheet.create({
   fieldText: {
     fontFamily: 'ProximaNova-Regular',
-    fontWeight: '600'
+    fontWeight: '600',
   },
   container: {
     flex: 1,
@@ -222,7 +220,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     borderRadius: 10,
-    backgroundColor: '#2ecc71'
+    backgroundColor: '#2ecc71',
   },
   logoIconContainer: {
     flexDirection: 'row',
@@ -245,7 +243,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     justifyContent: 'center',
     alignItems: 'center',
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
   },
   logoBtnCntner: {
     flex: 1,

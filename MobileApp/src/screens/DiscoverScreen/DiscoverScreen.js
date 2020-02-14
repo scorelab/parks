@@ -41,7 +41,7 @@ class DiscoverScreen extends React.Component {
     const data = await database()
       .ref(`/usersObservations/`)
       .once('value');
-    console.log(data);
+    // console.log(data);
     const val = data.val();
 
     let observations = [];
@@ -93,7 +93,7 @@ class DiscoverScreen extends React.Component {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Location');
+        // console.log('Location');
         await Geolocation.getCurrentPosition(
           async position => {
             const initialPosition = position;
@@ -145,6 +145,12 @@ class DiscoverScreen extends React.Component {
             showsUserLocation={true}
             zoomEnabled={true}
             zoomControlEnabled={true}
+            // userLocationUpdateInterval={60000}
+            followsUserLocation={true}
+            showsScale={true}
+            toolbarEnabled={true}
+            loadingEnabled={true}
+            // mapType={'satellite'}
             initialRegion={{
               latitude: this.state.location[1],
               longitude: this.state.location[0],
