@@ -15,14 +15,14 @@ class ParkScreen extends React.Component {
         backgroundColor: '#014421',
       },
       headerTintColor: 'white',
-      headerRight: () => (
-        <Button
-          onPress={() => navigation.navigate('Profile')}
-          mode="contained"
-          style={{marginRight: 5}}>
-          Profle
-        </Button>
-      ),
+      // headerRight: () => (
+      //   <Button
+      //     onPress={() => navigation.navigate('Profile')}
+      //     mode="contained"
+      //     style={{marginRight: 5}}>
+      //     Profle
+      //   </Button>
+      // ),
     };
   };
 

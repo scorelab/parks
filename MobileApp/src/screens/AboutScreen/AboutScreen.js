@@ -45,9 +45,11 @@ class AboutScreen extends React.Component {
               For more information contact us:
               <Text
                 style={{fontStyle: 'italic'}}
-                onPress={() => Linking.openURL('https://mail.google.com')}>
+                onPress={() =>
+                  Linking.openURL('https://gitter.im/scorelab/scorelab')
+                }>
                 {' '}
-                elly@scorelab.org
+                gitter.im/scorelab/scorelab
               </Text>
               {'\n'}
               {'\n'}

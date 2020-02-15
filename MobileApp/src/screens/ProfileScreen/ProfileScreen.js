@@ -15,6 +15,7 @@ import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndica
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import {NavigationEvents} from 'react-navigation';
 
 class ProfileScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -254,6 +255,7 @@ class ProfileScreen extends React.Component {
           </View>
         ) : (
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <NavigationEvents onDidFocus={this.getUserData} />
             {this.state.userPhoto !== '' ? (
               <ImageBackground
                 blurRadius={1}
