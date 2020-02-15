@@ -190,6 +190,8 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_netinfo')
+    implementation project(':react-native-smart-splash-screen')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-maps')
     implementation project(':@react-native-firebase_storage')
