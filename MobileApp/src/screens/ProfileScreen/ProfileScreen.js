@@ -82,6 +82,8 @@ class ProfileScreen extends React.Component {
       });
   }
 
+  componentDidUpdate() {}
+
   logutHandler = async () => {
     await this.closeMenu();
     let result = await auth()
@@ -155,7 +157,7 @@ class ProfileScreen extends React.Component {
       time = time.toString().replace(/,/g, ' ');
       let result = generateResult(val[i]);
       let address = val[i].address;
-
+      let verified = val[i].verified;
       userObservations.push([
         name,
         photo,
@@ -165,6 +167,7 @@ class ProfileScreen extends React.Component {
         userNick,
         result,
         address,
+        verified,
       ]);
       this.setState({
         userObservations: userObservations,
@@ -214,6 +217,7 @@ class ProfileScreen extends React.Component {
       time = time.toString().replace(/,/g, ' ');
       let result = generateResult(val[i]);
       let address = val[i].address;
+      let verified = val[i].verified;
       userObservations.push([
         name,
         photo,
@@ -223,6 +227,7 @@ class ProfileScreen extends React.Component {
         userNick,
         result,
         address,
+        verified,
       ]);
       lastVisible = i;
     }
@@ -243,7 +248,7 @@ class ProfileScreen extends React.Component {
         {this.state.activityIndicator ? (
           <View style={{width: '100%', backgroundColor: 'grey'}}>
             <ActivityIndicator
-              title={'Please wait'}
+              title={'Loading'}
               showIndicator={this.state.activityIndicator}
             />
           </View>
@@ -304,7 +309,25 @@ class ProfileScreen extends React.Component {
                       })
                     }
                     style={{justifyContent: 'center'}}>
-                    <Image style={styles.img} source={{uri: item[2]}} />
+                    <ImageBackground style={styles.img} source={{uri: item[2]}}>
+                      <View
+                        style={{
+                          backgroundColor:
+                            item[8][0] == 'v'
+                              ? 'green'
+                              : item[8][0] == 'p'
+                              ? 'yellow'
+                              : 'red',
+                          height: 30,
+                          width: 30,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text style={{color: 'white', fontWeight: 'bold'}}>
+                          {item[8][0].toUpperCase()}
+                        </Text>
+                      </View>
+                    </ImageBackground>
                   </TouchableOpacity>
                 )}
                 // Item Key
@@ -394,8 +417,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 3.085,
     height: Dimensions.get('window').width / 3.5,
     margin: 2,
-    justifyContent: 'center',
     borderRadius: 5,
+    flexDirection: 'row-reverse',
   },
   imgConatiner: {
     justifyContent: 'center',

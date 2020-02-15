@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width / 3.5,
     margin: 2,
     justifyContent: 'center',
-    borderRadius: 5,
+    borderRadius: 0,
   },
   imgConatiner: {
     flexDirection: 'row',
