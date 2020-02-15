@@ -7,7 +7,7 @@ import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndica
 import {NavigationEvents} from 'react-navigation';
 import database from '@react-native-firebase/database';
 import {generateResult} from '../../components/UserDataHandling/UserDataHandling';
-import {MAPMARKER} from '../../images/index';
+// import {MAPMARKER} from '../../images/index';
 var MapStyle = require('../../config/map.json');
 
 class DiscoverScreen extends React.Component {

@@ -6,45 +6,45 @@
  * @flow
  */
 import React from 'react';
-import {View} from 'react-native'
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from "react-navigation-stack";
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import {View} from 'react-native';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 // import { createBottomTabNavigator } from "react-navigation-tabs";
 // import { createDrawerNavigator } from "react-navigation-drawer";
 
 //Screens
-import LoginScreen from './src/screens/LoginScreen/LoginScreen'
-import CameraViewScreen from './src/screens/CameraViewScreen/CameraViewScreen'
-import LandingScreen from './src/screens/LandingScreen/LandingScreen'
-import FormScreen from './src/screens/FormScreen/FormScreen'
-import FeedScreen from './src/screens/FeedScreen/FeedScreen'
-import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen'
-import SearchScreen from './src/screens/SearchScreen/SearchScreen'
-import DiscoverScreen from './src/screens/DiscoverScreen/DiscoverScreen'
-import ShowPhotoScreen from './src/screens/ShowPhotoScreen/ShowPhotoScreen'
-import ShowDetailedPhotoScreen from './src/screens/ShowDetailedPhotoScreen/ShowDetailedPhotoScreen'
-import showLocationScreen from './src/screens/ShowLocationScreen/ShowLocationScreen'
-import AboutScreen from './src/screens/AboutScreen/AboutScreen'
-import ParkScreen from './src/screens/ParkScreen/ParkScreen'
-import ParkDetails from './src/screens/ParkDetails/ParkDetails'
-import EmailAuthSignInScreen from './src/screens/EmailAuthScreen/EmailAuthSignInScreen'
-import EmailAuthSignUpScreen from './src/screens/EmailAuthScreen/EmailAuthSignUpScreen'
-import SpeciesDetailsScreen from './src/screens/SpeciesDetailsScreen/SpeciesDetailsScreen'
+import LoginScreen from './src/screens/LoginScreen/LoginScreen';
+import CameraViewScreen from './src/screens/CameraViewScreen/CameraViewScreen';
+import LandingScreen from './src/screens/LandingScreen/LandingScreen';
+import FormScreen from './src/screens/FormScreen/FormScreen';
+import FeedScreen from './src/screens/FeedScreen/FeedScreen';
+import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen';
+import SearchScreen from './src/screens/SearchScreen/SearchScreen';
+import DiscoverScreen from './src/screens/DiscoverScreen/DiscoverScreen';
+import ShowPhotoScreen from './src/screens/ShowPhotoScreen/ShowPhotoScreen';
+import ShowDetailedPhotoScreen from './src/screens/ShowDetailedPhotoScreen/ShowDetailedPhotoScreen';
+import showLocationScreen from './src/screens/ShowLocationScreen/ShowLocationScreen';
+import AboutScreen from './src/screens/AboutScreen/AboutScreen';
+import ParkScreen from './src/screens/ParkScreen/ParkScreen';
+import ParkDetails from './src/screens/ParkDetails/ParkDetails';
+import EmailAuthSignInScreen from './src/screens/EmailAuthScreen/EmailAuthSignInScreen';
+import EmailAuthSignUpScreen from './src/screens/EmailAuthScreen/EmailAuthSignUpScreen';
+import SpeciesDetailsScreen from './src/screens/SpeciesDetailsScreen/SpeciesDetailsScreen';
 
-import {Avatar} from 'react-native-paper'
+import {Avatar} from 'react-native-paper';
 
 //SignIn stack
-const AuthStack = createStackNavigator({
-  SignIn: LoginScreen,
-  Email: EmailAuthSignInScreen,
-  EmailSignUp: EmailAuthSignUpScreen
-  
-},
-{
-  mode: 'modal',
-  headerMode: 'none',
-}
+const AuthStack = createStackNavigator(
+  {
+    SignIn: LoginScreen,
+    Email: EmailAuthSignInScreen,
+    EmailSignUp: EmailAuthSignUpScreen,
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+  },
 );
 
 const SelectStack = createStackNavigator({
@@ -52,15 +52,13 @@ const SelectStack = createStackNavigator({
   ParkDetails: ParkDetails,
   Profile: ProfileScreen,
   AboutScreen: AboutScreen,
-  SpeciesDetailsScreen: SpeciesDetailsScreen
-},
-
-);
+  SpeciesDetailsScreen: SpeciesDetailsScreen,
+});
 
 //Home stack
 const FeedStack = createStackNavigator({
   FeedScreen: FeedScreen,
-  showDetailedPhoto: ShowDetailedPhotoScreen ,
+  showDetailedPhoto: ShowDetailedPhotoScreen,
   showLocationScreen: showLocationScreen,
   Profile: ProfileScreen,
 });
@@ -68,19 +66,19 @@ const FeedStack = createStackNavigator({
 const CameraStack = createStackNavigator({
   CameraViewScreen: CameraViewScreen,
   FormScreenStack: FormScreen,
-  showPhoto:  ShowPhotoScreen,
+  showPhoto: ShowPhotoScreen,
 });
 
 const DiscoverStack = createStackNavigator({
   Discover: DiscoverScreen,
   showDetailedPhoto: ShowDetailedPhotoScreen,
-  showLocationScreen: showLocationScreen
+  showLocationScreen: showLocationScreen,
 });
 
 const SearchStack = createStackNavigator({
-  Search:  SearchScreen,
+  Search: SearchScreen,
   showDetailedPhoto: ShowDetailedPhotoScreen,
-  showLocationScreen: showLocationScreen
+  showLocationScreen: showLocationScreen,
 });
 
 // const ProfileStack = createStackNavigator({
@@ -96,8 +94,10 @@ const MainTabs = createMaterialBottomTabNavigator({
     screen: SelectStack,
     navigationOptions: {
       tabBarLabel: [],
-      tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="nature-people" /></View>
+      tabBarIcon: ({tintColor}) => (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Avatar.Icon size={50} color="#014421" icon="nature-people" />
+        </View>
       ),
     },
   },
@@ -105,8 +105,10 @@ const MainTabs = createMaterialBottomTabNavigator({
     screen: FeedStack,
     navigationOptions: {
       tabBarLabel: [],
-      tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="home-variant" /></View>
+      tabBarIcon: ({tintColor}) => (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Avatar.Icon size={50} color="#014421" icon="home-variant" />
+        </View>
       ),
     },
   },
@@ -114,8 +116,10 @@ const MainTabs = createMaterialBottomTabNavigator({
     screen: CameraStack,
     navigationOptions: {
       tabBarLabel: [],
-      tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="camera-iris" /></View>
+      tabBarIcon: ({tintColor}) => (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Avatar.Icon size={50} color="#014421" icon="camera-iris" />
+        </View>
       ),
     },
   },
@@ -123,8 +127,10 @@ const MainTabs = createMaterialBottomTabNavigator({
     screen: SearchStack,
     navigationOptions: {
       tabBarLabel: [],
-      tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="image-search" /></View>
+      tabBarIcon: ({tintColor}) => (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Avatar.Icon size={50} color="#014421" icon="image-search" />
+        </View>
       ),
     },
   },
@@ -132,8 +138,10 @@ const MainTabs = createMaterialBottomTabNavigator({
     screen: DiscoverStack,
     navigationOptions: {
       tabBarLabel: [],
-      tabBarIcon: ({ tintColor }) => (
-        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Avatar.Icon size={50} color='#014421' icon="google-maps" /></View>
+      tabBarIcon: ({tintColor}) => (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Avatar.Icon size={50} color="#014421" icon="google-maps" />
+        </View>
       ),
     },
   },
@@ -155,7 +163,7 @@ const AppModalStack = createStackNavigator(
   {
     mode: 'modal',
     headerMode: 'none',
-  }
+  },
 );
 
 const App = createSwitchNavigator({
