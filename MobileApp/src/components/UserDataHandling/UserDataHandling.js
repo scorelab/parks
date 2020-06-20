@@ -11,9 +11,9 @@ export function generateResult(data) {
 
     if (data.sex === 0) {
       result.push(['gender-male-female', 'Male']);
-    } else if (data.sex === 0) {
+    } else if (data.sex === 1) {
       result.push(['gender-male-female', 'Female']);
-    } else if (data.sex === 0) {
+    } else if (data.sex === 2) {
       result.push(['gender-male-female', 'Both male and female']);
     } else {
       result.push(['gender-male-female', "Don't know the gender"]);
