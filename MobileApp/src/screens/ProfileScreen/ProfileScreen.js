@@ -87,7 +87,6 @@ class ProfileScreen extends React.Component {
 
   logutHandler = async () => {
     await this.closeMenu();
-    let result = await auth()
       .signOut()
       .then(() => console.log('Log out'));
   };
