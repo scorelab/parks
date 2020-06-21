@@ -11,8 +11,6 @@ export async function facebookLogin(navigate) {
       return
     }
 
-    console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
-
     // get the access token
     const data = await AccessToken.getCurrentAccessToken();
 
@@ -25,7 +23,6 @@ export async function facebookLogin(navigate) {
 
     // login with credential
     await firebase.auth().signInWithCredential(credential).then((user)=>{
-      console.log(JSON.stringify(user.user.toJSON().uid))
       const uid = user.user.toJSON().uid
       const name = user.user.toJSON().displayName
       const email = user.user.toJSON().email
