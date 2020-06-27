@@ -11,9 +11,9 @@ export function generateResult(data) {
 
     if (data.sex === 0) {
       result.push(['gender-male-female', 'Male']);
-    } else if (data.sex === 0) {
+    } else if (data.sex === 1) {
       result.push(['gender-male-female', 'Female']);
-    } else if (data.sex === 0) {
+    } else if (data.sex === 2) {
       result.push(['gender-male-female', 'Both male and female']);
     } else {
       result.push(['gender-male-female', "Don't know the gender"]);
@@ -40,7 +40,7 @@ export function generateUUID() {
   let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(
     c,
   ) {
-    let r = (dt + Math.random() * 16) % 16 | 0;
+    let r = (dt +  window.Crypto.getRandomValues(new Uint32Array(1)) * 16) % 16 | 0;
     dt = Math.floor(dt / 16);
     return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });

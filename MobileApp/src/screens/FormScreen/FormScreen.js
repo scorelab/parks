@@ -115,8 +115,6 @@ class FormScreen extends React.Component {
       isAlive: this.state.isAlive,
       location: this.state.location,
       time: this.state.time,
-      isAlive: this.state.isAlive,
-      address: this.state.address,
       verified: this.state.verified,
       notes: this.state.notes,
       park: this.state.park,
