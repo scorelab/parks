@@ -1,4 +1,4 @@
-<h1> LOGO< /h1>
+<h1>LOGO</h1>
 <p>I created a Logo for parks app</p>
 <br>
 <br>
